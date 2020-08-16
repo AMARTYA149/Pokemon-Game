@@ -40,8 +40,13 @@ function drawBalls(X, Y) {
   ctx.drawImage(pokeball, X, Y, balls.w, balls.h);
 }
 
-function clearCanvas() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
+// function clearCanvas() {
+//   ctx.clearRect(0, 0, canvas.width, canvas.height);
+// }
+
+function clearPlayer() {
+  // ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.clearRect(player.x - player.w / 2, player.y - player.h/2, player.x + player.w / 2, player.y + player.h/2);
 }
 
 function newPos() {
@@ -75,7 +80,7 @@ function detectWallCollision() {
 
 
 function renderPlayer() {
-  clearCanvas();
+  clearPlayer();
   drawPlayer();
   newPos();
   requestAnimationFrame(renderPlayer);
@@ -125,8 +130,7 @@ function keyUp(e) {
   }
 }
 
-
-// renderPlayer();
+renderPlayer();
 document.addEventListener('keydown', keyDown);
 document.addEventListener('keyup', keyUp);
 
@@ -166,8 +170,8 @@ function makeRandomBalls() {
   randomArrayXOld = randomArrayX.slice();
   randomArrayYOld = randomArrayY.slice();
 
-  console.log("randomArrayX",randomArrayXOld);
-  console.log("randomArrayY",randomArrayYOld);
+  // console.log("randomArrayX",randomArrayXOld);
+  // console.log("randomArrayY",randomArrayYOld);
   for(let i = 0; i<ARRAY_LENGTH; i++) {
     drawBalls(randomArrayX[i], randomArrayY[i]);
     // ctx.clearRect(randomArrayX[i] - balls.x / 2, randomArrayY[i] - balls.y/2, randomArrayX[i] + balls.x / 2, randomArrayY[i] + balls.y/2);
@@ -175,8 +179,9 @@ function makeRandomBalls() {
 }
 
 function deleteRandomBalls(){
+  console.log("randomCount", randomCount);
   for(let i = 0; i<randomCount; i++) {
-    ctx.clearRect(randomArrayXOld[i] - balls.x / 2, randomArrayYOld[i] - balls.y/2, randomArrayXOld[i] + balls.x / 2, randomArrayYOld[i] + balls.y/2);
+    ctx.clearRect(randomArrayXOld[i] - balls.w / 2, randomArrayYOld[i] - balls.h/2, randomArrayXOld[i] + balls.w / 2, randomArrayYOld[i] + balls.h/2);
   }
 }
 
