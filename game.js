@@ -11,8 +11,6 @@ const startY = canvas.height -50;
 const pokeball = document.querySelector('#pokeball');
 const pokemon = document.querySelector('#pokemon');
 
-
-
 const player = {
   w: 35,
   h: 35,
@@ -30,11 +28,9 @@ const balls = {
   y: 200
 };
 
-
 // function drawBalls(X, Y) {
 //   ctx.drawImage(pokemon, player.x, player.y, player.w, player.h);
 // }
-
 
 function drawPlayer() {
   ctx.drawImage(pokemon, player.x, player.y, player.w, player.h);
@@ -138,74 +134,52 @@ document.addEventListener('keyup', keyUp);
 
 // ***************************************************************
 
-
-//Generate XY coordinates of PokeBalls
-// var randomX;
-// var randomY;
-// var maxX = 700;
-// var maxY = 400;
-// var min = 50;
-// function findRandomXY() {
-//   randomX = Math.floor(Math.random() * maxX) + min; //Finds number between 0 - maxX
-//   randomY = Math.floor(Math.random() * maxY) + min; //Finds number between 0 - maxY
-//   console.log("randomX",randomX);
-//   console.log("randomY",randomY);
-//   drawBalls(randomX, randomY);
-// }
-// setInterval(findRandomXY, 1000);
-
-// function randomBalls(count){
-//   for(let i = 0; i <= count; i++){
-//     // arr[i] = Math.round(Math.random() * 10);
-//     setInterval(findRandomXY, 1000);
-//     }
-// }
-
-
-// function randomBalls(count) 
-// {
-//     var n;
-//     var r=[];
-//     for (n=1; n<=count; ++n)
-//     {
-//       var i = Math.floor((Math.random() * (20-n)) + 1);
-//       // r.push(a[i]);
-//       // a[i] = a[20-n];
-//     }
-//     // var s = "";
-//     for (i = 0; i < 5; i++)
-//     {
-//       s += r[i] + " ";
-//     }
-//     document.getElementById("demo").innerHTML = s;
-// }
-
-// //Generate random number of PokeBalls
+// //Generate random number of PokeBalls at random XY position
 var random;
-var max = 15;
-var min = 1
-function findRandom() {
-  random = Math.floor(Math.random() * max) + 1; //Finds number between 0 - max
-  const ARRAY_LENGTH = random;
+// var max = 15;
+// var min = 1
+ 
+var randomArrayXOld = [];
+var randomArrayYOld = [];
+var randomCount;
+
+function generateRandomBallCount(){
+  let random = Math.floor(Math.random() * 15) + 1; //Finds number between 1-15
+  return random;
+}
+
+function makeRandomBalls() {
+  randomCount = generateRandomBallCount();
+  const ARRAY_LENGTH = randomCount;
   const randomArrayX = [];
   const randomArrayY = [];
 
-var maxX = 700;
-var maxY = 400;
-var min = 50;
+  var maxX = 700;
+  var maxY = 400;
+  var min = 50;
 
-for(let i = 0; i<ARRAY_LENGTH; i++) {
-  randomArrayX.push(Math.floor(Math.random() * maxX) + min);
-  randomArrayY.push(Math.floor(Math.random() * maxY) + min);
+  for(let i = 0; i<ARRAY_LENGTH; i++) {
+    randomArrayX.push(Math.floor(Math.random() * maxX) + min);
+    randomArrayY.push(Math.floor(Math.random() * maxY) + min);
+  }
 
+  randomArrayXOld = randomArrayX.slice();
+  randomArrayYOld = randomArrayY.slice();
+
+  console.log("randomArrayX",randomArrayXOld);
+  console.log("randomArrayY",randomArrayYOld);
+  for(let i = 0; i<ARRAY_LENGTH; i++) {
+    drawBalls(randomArrayX[i], randomArrayY[i]);
+    // ctx.clearRect(randomArrayX[i] - balls.x / 2, randomArrayY[i] - balls.y/2, randomArrayX[i] + balls.x / 2, randomArrayY[i] + balls.y/2);
+  }
 }
-  // console.log("randomArrayX",randomArrayX);
-  // console.log("randomArrayY",randomArrayY);
-for(let i = 0; i<ARRAY_LENGTH; i++) {
-  drawBalls(randomArrayX[i], randomArrayY[i]);
+
+function deleteRandomBalls(){
+  for(let i = 0; i<randomCount; i++) {
+    ctx.clearRect(randomArrayXOld[i] - balls.x / 2, randomArrayYOld[i] - balls.y/2, randomArrayXOld[i] + balls.x / 2, randomArrayYOld[i] + balls.y/2);
+  }
 }
 
-
-}
-findRandom()
-setInterval(findRandom, 3000);
+makeRandomBalls()
+setInterval(deleteRandomBalls, 3000);
+setInterval(makeRandomBalls, 3000);
