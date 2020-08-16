@@ -20,8 +20,12 @@ h2{
 
 #pokeball{
   display: none;
+  height: 25px;
+  width: 25px;
 }
 
 #pokemon{
   display: none;
+  width: 35px;
+  height: 35px;
 }
