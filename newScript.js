@@ -3,7 +3,11 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
+
+//handle score
 var score = 0;
+const yourScore = document.querySelector("#your_S");
+const bestScore = document.querySelector("#best_S");
 
 console.log("canvas width" ,canvas.width);
 console.log("canvas ht" ,canvas.height);
@@ -45,6 +49,20 @@ var random;
 var randomArrayXOld = [];
 var randomArrayYOld = [];
 var randomCount;
+var bestScoreValue = localStorage.getItem("bestS");
+
+
+
+function bestScoreFun(){
+  // console.log("bestScoreValue", bestScoreValue);
+  if (bestScoreValue == null || bestScoreValue == "null"){
+    bestScoreValue = 0
+    localStorage.setItem("bestS", bestScoreValue);
+    bestScore.innerHTML = bestScoreValue;
+  } else {
+    bestScore.innerHTML = bestScoreValue;    
+  } 
+}  
 
 
 //Draw Player
@@ -179,7 +197,7 @@ function makeRandomBalls() {
 function deleteRandomBalls(){
   // console.log("randomCount", randomCount);
   for(let i = 0; i<randomCount; i++) {
-    ctx.clearRect(randomArrayXOld[i] , randomArrayYOld[i],  balls.w  ,  balls.h );
+    ctx.clearRect(randomArrayXOld[i] , randomArrayYOld[i],  balls.w +5 ,  balls.h +5);
   }
 }
 
@@ -198,7 +216,16 @@ function collectBalls(){
       pokePick.currentTime = 0;
       pokePick.play();
       ctx.clearRect(randomArrayXOld[i] , randomArrayYOld[i],  balls.w  ,  balls.h );
-      score++;      
+      score++;     
+
+      yourScore.innerHTML = score;
+      console.log("bestScoreValue", bestScoreValue);
+      if(score > bestScoreValue){
+        bestScoreValue = score;
+        localStorage.setItem("bestS", bestScoreValue);
+        bestScore.innerHTML = bestScoreValue;
+      }
+
       console.log("score",score);
       randomArrayXOld.splice(i,1);
       randomArrayYOld.splice(i,1);      
@@ -218,10 +245,13 @@ function renderPlayer() {
   drawPlayer();
   newPos();
   collectBalls();
-  requestAnimationFrame(renderPlayer);}
+  requestAnimationFrame(renderPlayer);
+}
 
 
 renderPlayer();
+bestScoreFun();
+
 document.addEventListener('keydown', keyDown);
 document.addEventListener('keyup', keyUp);
 
