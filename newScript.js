@@ -51,8 +51,13 @@ var randomArrayYOld = [];
 var randomCount;
 var bestScoreValue = localStorage.getItem("bestS");
 
+var backGroundMusic = new Audio('https://drive.google.com/uc?id=1ljrlJ1UBrH4YnIpxH02jqR_oJeLZhkDv');
+backGroundMusic.play();
+backGroundMusic.volume = 0.5;
+backGroundMusic.loop = true;
 
 
+//handling best score using localStorage
 function bestScoreFun(){
   // console.log("bestScoreValue", bestScoreValue);
   if (bestScoreValue == null || bestScoreValue == "null"){
@@ -169,6 +174,8 @@ function generateRandomBallCount(){
   return random;
 }
 
+
+//generating random balls at random position
 function makeRandomBalls() {
   randomCount = generateRandomBallCount();
   const ARRAY_LENGTH = randomCount;
@@ -193,7 +200,7 @@ function makeRandomBalls() {
 }
 
 
-//delete previous created balls
+//delete previously created random balls
 function deleteRandomBalls(){
   // console.log("randomCount", randomCount);
   for(let i = 0; i<randomCount; i++) {
@@ -201,6 +208,8 @@ function deleteRandomBalls(){
   }
 }
 
+
+//collecting balls and scoring
 function collectBalls(){
   // let score = 0;
   for(let i = 0; i<randomCount; i++) {
@@ -218,6 +227,7 @@ function collectBalls(){
       ctx.clearRect(randomArrayXOld[i] , randomArrayYOld[i],  balls.w  ,  balls.h );
       score++;     
 
+      //maintaining best score and updation
       yourScore.innerHTML = score;
       console.log("bestScoreValue", bestScoreValue);
       if(score > bestScoreValue){
@@ -229,7 +239,7 @@ function collectBalls(){
       console.log("score",score);
       randomArrayXOld.splice(i,1);
       randomArrayYOld.splice(i,1);      
-      // break;
+      
     }
   }
 }
@@ -239,7 +249,7 @@ setInterval(deleteRandomBalls, 3000);
 setInterval(makeRandomBalls, 3000);
 
 
-//Starting game
+//Starting game function
 function renderPlayer() {
   clearPlayer();
   drawPlayer();
@@ -248,10 +258,12 @@ function renderPlayer() {
   requestAnimationFrame(renderPlayer);
 }
 
-
+//Game initialising
 renderPlayer();
 bestScoreFun();
 
+
+//noting arrow key commands
 document.addEventListener('keydown', keyDown);
 document.addEventListener('keyup', keyUp);
 
